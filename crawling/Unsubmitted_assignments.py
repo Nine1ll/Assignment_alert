@@ -42,30 +42,15 @@ def unsubmitted_assignments():
         request = driver.page_source
         soup = BeautifulSoup(request, 'html.parser')
 
-        # assignments = []
+        assignments = []
         unsubmitted_assignments = []
-        # submitted_assignments = []
-        # url_assignments = []
-        temp_dict = {}
-        # return assignments
-        subjects = {
-            "과목명":
-            {
-                "submitted": ["과제명"],
-                "unsubmitted1": {
-                    "assignment_name": "",
-                    "url": "",
-                    "deadline": "",
-                    "comments": "",
-                },
-                "unsubmitted2": {
-                    "assignment_name": "",
-                    "url": "",
-                    "deadline": "",
-                    "comments": "",
-                },
-            }
-        }
+
+        url_assignments = []
+        subject_names = []
+        assignment_names=[]
+        submit_ox = []
+        deadline_list = []
+
         # page 수
         pages = soup.select(".eClassList .paging li:nth-child(2) ul li")
         for i, page in enumerate(pages):
@@ -86,21 +71,23 @@ def unsubmitted_assignments():
                 page_assignment.append(name.text.strip())
                 # 과목명
                 subject_name = name.text.strip().split(']')[0][1:]
+                subject_names.append(subject_name)
                 # 과제명
-                assignments_name = name.text.strip().split(']')[1]
-
+                page_assignment_name = name.text.strip().split(']')[1]
+                assignment_names.append(page_assignment_name)
                 # 밖
-                # assignments.append(name.text.strip())
+                assignments.append(name.text.strip())
             # 과제 url
             links = soup.select("dt a", href=True)
             for link in links:
                 # 안
                 urls_assignment.append(link['href'])
                 # # 밖
-                # url_assignments.append(link['href'])
+                url_assignments.append(link['href'])
             # 과제 제출 여부
             submitted = soup.select(".information p:nth-child(3) span:nth-child(2)")
             for index, submit in enumerate(submitted):
+                submit_ox.append(submit.text.strip())
                 if submit.text.strip() == "미제출":
                     unsubmitted_assignments.append(f"{page_assignment[index]}")
                     url_link = urls_assignment[index]
@@ -118,7 +105,9 @@ def unsubmitted_assignments():
 
                         deadline_time = deadline_split[length-1]
                         deadline_date = deadline_split[length-2]
-                        print(f"시간: {deadline_time}, 날짜:{deadline_date}")
+                        deadline_temp = f"{deadline_date}, {deadline_time}"
+                        deadline_list.append(deadline_temp)
+                        # print(f"시간: {deadline_time}, 날짜:{deadline_date}")
 
                 else:
                     pass
@@ -130,6 +119,13 @@ def unsubmitted_assignments():
         # print(f"제출 과제 : {submitted_assignments}, {len(submitted_assignments)}\n")
         # print(f"{url_assignments}")
         # print(f"temp_assignments: {temp_assignments}")
+
+        for i, submit_x in enumerate(submit_ox):
+            if submit_x == "미제출":
+                index = 0
+                # deadline이 미제출일때만 가져와서 index error
+                print(f"'{subject_names[i]}' : '{assignment_names[i]}', '{deadline_list[index]}', '{url_assignments[i]}' ")
+                index+=1
     except AttributeError as e:
         print(e)
 
