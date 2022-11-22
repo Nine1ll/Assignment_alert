@@ -3,10 +3,8 @@ import time
 from selenium import webdriver
 
 
-# MJU_ID = "60212670"
-# MJU_PASSWORD = "yjy7878^^"
-MJU_ID = "60211642"
-MJU_PASSWORD = "GospotB1607@"
+MJU_ID = "ID"
+MJU_PASSWORD = "PASSWORD"
 
 
 def login(dr):
