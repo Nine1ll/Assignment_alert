@@ -122,7 +122,7 @@ def unsubmitted_assignments():
             if submit_x == "미제출":
                 index = 0
                 # deadline이 미제출일때만 가져와서 index error
-                print(f"'{subject_names[i]}' : '{assignment_names[i]}', '{deadline_list[index]}', '{url_assignments[i]}' ")
+                print(f"'{subject_names[i]}' : '{assignment_names[i]}', '{deadline_list[index]}', 'https://home.mju.ac.kr{url_assignments[i]}' ")
                 index+=1
     except AttributeError as e:
         print(e)
